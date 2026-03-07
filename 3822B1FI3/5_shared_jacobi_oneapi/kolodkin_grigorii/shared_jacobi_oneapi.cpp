@@ -1,81 +1,72 @@
 #include "shared_jacobi_oneapi.h"
 #include <cmath>
 
-std::vector<float> JacobiSharedONEAPI(
-        const std::vector<float>& a, const std::vector<float>& b,
-        float accuracy, sycl::device device) {
-    size_t N = b.size();
+std::vector<float> JacobiSharedONEAPI(const std::vector<float>& a,
+                                    const std::vector<float>& b,
+                                    float accuracy,
+                                    sycl::device device) {
+    const int n = b.size();
+
+    std::vector<float> x_host(n);
     sycl::queue q(device);
+    
+    float* a_dev = sycl::malloc_device<float>(n * n, q);
+    float* b_dev = sycl::malloc_device<float>(n, q);
+    float* x_dev = sycl::malloc_device<float>(n, q);
+    float* x_new_dev = sycl::malloc_device<float>(n, q);
 
-    std::vector<float> x(N, 0.0f);       
-    std::vector<float> x_new(N, 0.0f);   
-    std::vector<float> diff(N, 0.0f);    
+    q.memcpy(a_dev, a.data(), sizeof(float) * n * n).wait();
+    q.memcpy(b_dev, b.data(), sizeof(float) * n).wait();
+    q.memset(x_dev, 0, sizeof(float) * n).wait();
+    q.memset(x_new_dev, 0, sizeof(float) * n).wait();
 
-    sycl::buffer<float, 1> bufA(a.data(), sycl::range<1>(N * N));
-    sycl::buffer<float, 1> bufB(b.data(), sycl::range<1>(N));
-    sycl::buffer<float, 1> bufX(x.data(), sycl::range<1>(N));
-    sycl::buffer<float, 1> bufXNew(x_new.data(), sycl::range<1>(N));
-    sycl::buffer<float, 1> bufDiff(diff.data(), sycl::range<1>(N));
+    for (int iter = 0; iter < ITERATIONS; ++iter) {
+        q.submit([&](sycl::handler& cgh) {
+            sycl::local_accessor<float> x_local(sycl::range<1>(n), cgh);
+            sycl::local_accessor<float> x_new_local(sycl::range<1>(n), cgh);
 
-    float residual = accuracy + 1;
-    int iter = 0;
+            cgh.parallel_for(sycl::nd_range<1>(sycl::range<1>(n), sycl::range<1>(256)),
+                [=](sycl::nd_item<1> item) {
+                    int i = item.get_global_id(0);
+                    
+                    float sum = 0.0f;
+                    float a_ii = a_dev[i * n + i];
 
-    while (residual > accuracy && iter < ITERATIONS) {
-        ++iter;
-
-        q.submit([&](sycl::handler& h) {
-            auto a_acc = bufA.get_access<sycl::access::mode::read>(h);
-            auto b_acc = bufB.get_access<sycl::access::mode::read>(h);
-            auto x_acc = bufX.get_access<sycl::access::mode::read>(h);
-            auto x_new_acc = bufXNew.get_access<sycl::access::mode::write>(h);
-
-            h.parallel_for(sycl::range<1>(N), [=](sycl::id<1> i) {
-                float sum = 0.0f;
-                float diag = 0.0f;
-                int row = i[0];
-                for (int col = 0; col < N; ++col) {
-                    float val = a_acc[row * N + col];
-                    if (col == row) {
-                        diag = val;
-                    } else {
-                        sum += val * x_acc[col];
+                    for (int j = 0; j < n; ++j) {
+                        if (j != i) {
+                            sum += a_dev[i * n + j] * x_dev[j];
+                        }
                     }
-                }
-                x_new_acc[row] = (b_acc[row] - sum) / diag;
-            });
-        });
-        
-        q.submit([&](sycl::handler& h) {
-            auto x_acc = bufX.get_access<sycl::access::mode::read>(h);
-            auto x_new_acc = bufXNew.get_access<sycl::access::mode::read>(h);
-            auto diff_acc = bufDiff.get_access<sycl::access::mode::write>(h);
-            h.parallel_for(sycl::range<1>(N), [=](sycl::id<1> i) {
-                diff_acc[i[0]] = std::abs(x_new_acc[i[0]] - x_acc[i[0]]);
-            });
+                    x_new_local[i] = (b_dev[i] - sum) / a_ii;
+
+                    x_new_dev[i] = x_new_local[i];
+                });
         }).wait();
 
-        q.submit([&](sycl::handler& h) {
-            auto x_acc = bufX.get_access<sycl::access::mode::write>(h);
-            auto x_new_acc = bufXNew.get_access<sycl::access::mode::read>(h);
-            h.parallel_for(sycl::range<1>(N), [=](sycl::id<1> i) {
-                x_acc[i[0]] = x_new_acc[i[0]];
-            });
-        }).wait();
+        q.memcpy(x_host.data(), x_new_dev, sizeof(float) * n).wait();
+            
+        std::vector<float> x_old(n);
+        q.memcpy(x_old.data(), x_dev, sizeof(float) * n).wait();
 
-        auto diff_host = diff.data();
-        residual = 0.0f;
-        for (size_t i = 0; i < N; ++i) {
-            residual = std::max(residual, diff_host[i]);
+        bool converged = true;
+        for (int i = 0; i < n; ++i) {
+            if (std::fabs(x_host[i] - x_old[i]) >= accuracy) {
+                converged = false;
+                break;
+            }
         }
+
+        q.memcpy(x_dev, x_host.data(), sizeof(float) * n).wait();
+
+        if (converged)
+            break;
     }
 
-    {
-        auto host_x_acc = bufX.get_access<sycl::access::mode::read>();
-        for (size_t i = 0; i < N; ++i) {
-            x[i] = host_x_acc[i];
-        }
-    }
+    sycl::free(a_dev, q);
+    sycl::free(b_dev, q);
+    sycl::free(x_dev, q);
+    sycl::free(x_new_dev, q);
 
-    return x;
-
+    return x_host;
 }
+
