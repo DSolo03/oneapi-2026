@@ -1,4 +1,4 @@
-/home/crazyproger/sandbox/oneapi-2026/3822B1FI3/4_dev_jacobi_oneapi/lopatin_ilya/dev_jacobi_oneapi.cpp:1:10: fatal error: 'jacobi_dev_oneapi.h' file not found
-    1 | #include "jacobi_dev_oneapi.h"
-      |          ^~~~~~~~~~~~~~~~~~~~~
+/home/crazyproger/sandbox/oneapi-2026/3822B1FI3/4_dev_jacobi_oneapi/lopatin_ilya/dev_jacobi_oneapi.cpp:3:10: fatal error: 'buffer.hpp' file not found
+    3 | #include <buffer.hpp>
+      |          ^~~~~~~~~~~~
 1 error generated.
