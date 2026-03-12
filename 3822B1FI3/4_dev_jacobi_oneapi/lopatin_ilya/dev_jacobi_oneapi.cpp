@@ -1,4 +1,5 @@
-#include "jacobi_dev_oneapi.h"
+#include "dev_jacobi_oneapi.h"
+
 #include <buffer.hpp>
 #include <handler.hpp>
 #include <range.hpp>

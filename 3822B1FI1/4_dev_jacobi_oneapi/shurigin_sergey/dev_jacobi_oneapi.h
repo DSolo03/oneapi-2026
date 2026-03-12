@@ -1,5 +1,5 @@
-#ifndef __JACOBI_ACC_ONEAPI_H
-#define __JACOBI_ACC_ONEAPI_H
+#ifndef __DEV_JACOBI_ONEAPI_H
+#define __DEV_JACOBI_ONEAPI_H
 
 #include <vector>
 
@@ -7,8 +7,8 @@
 
 #define ITERATIONS 1024
 
-std::vector<float> JacobiAccONEAPI(
+std::vector<float> JacobiDevONEAPI(
         const std::vector<float> a, const std::vector<float> b,
         float accuracy, sycl::device device);
 
-#endif  // __JACOBI_ACC_ONEAPI_H
+#endif  // __DEV_JACOBI_ONEAPI_H

@@ -1,7 +1,9 @@
 #include "jacobi_kokkos.h"
 #include <cmath>
 
-std::vector<float> JacobiKokkos(const std::vector<float>& a,const std::vector<float>& b,float accuracy) {
+std::vector<float> JacobiKokkos(const std::vector<float>& a,
+                                const std::vector<float>& b,
+                                float accuracy) {
     using ExecSpace = Kokkos::SYCL;
     using MemSpace  = Kokkos::SYCLDeviceUSMSpace;
 
@@ -32,44 +34,50 @@ std::vector<float> JacobiKokkos(const std::vector<float>& a,const std::vector<fl
             x_old(i) = 0.0f;
         });
 
-    Kokkos::fence();
+    bool converged = false;
+    const int CHECK_INTERVAL = 8;
 
-    float error = 0.0f;
+    for (int iter = 0; iter < ITERATIONS && !converged; ++iter) {
 
-    for (int iter = 0; iter < ITERATIONS; ++iter) {
-
-        error = 0.0f;
-
-        Kokkos::parallel_reduce(
+        Kokkos::parallel_for(
             Kokkos::RangePolicy<ExecSpace>(0, n),
-            KOKKOS_LAMBDA(int i, float& local_max) {
+            KOKKOS_LAMBDA(int i) {
 
                 float sigma = 0.0f;
 
-                for (int j = 0; j < n; ++j)
-                    sigma += d_a(i, j) * x_old(j);
+                for (int j = 0; j < n; ++j) {
+                    if (j != i)
+                        sigma += d_a(i, j) * x_old(j);
+                }
 
-                sigma -= d_a(i, i) * x_old(i);
+                x_new(i) = (d_b(i) - sigma) * inv_diag(i);
+            });
 
-                float new_val = (d_b(i) - sigma) * inv_diag(i);
-                x_new(i) = new_val;
+        if ((iter + 1) % CHECK_INTERVAL == 0) {
 
-                float diff = fabsf(new_val - x_old(i));
-                local_max = diff > local_max ? diff : local_max;
-            },
-            Kokkos::Max<float>(error)
-        );
+            float error = 0.0f;
 
-        Kokkos::fence();
+            Kokkos::parallel_reduce(
+                Kokkos::RangePolicy<ExecSpace>(0, n),
+                KOKKOS_LAMBDA(int i, float& local_max) {
 
-        if (error < accuracy)
-            break;
+                    float diff = Kokkos::fabs(x_new(i) - x_old(i));
+                    if (diff > local_max)
+                        local_max = diff;
+                },
+                Kokkos::Max<float>(error)
+            );
 
-        std::swap(x_old, x_new);
+            if (error < accuracy) {
+                converged = true;
+                break;
+            }
+        }
+
+        Kokkos::kokkos_swap(x_old, x_new);
     }
 
-    auto h_x = Kokkos::create_mirror_view_and_copy(
-        Kokkos::HostSpace(), x_old);
+    auto h_x = Kokkos::create_mirror_view_and_copy(Kokkos::HostSpace(), x_old);
 
     std::vector<float> result(n);
     for (int i = 0; i < n; ++i)
