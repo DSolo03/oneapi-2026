@@ -1,0 +1,4 @@
+/home/crazyproger/sandbox/oneapi-2026/3822B1FI1/6_block_gemm_oneapi/shulpin_ilya/block_gemm_oneapi.cpp:49:87: error: use of undeclared identifier 'tj'
+   49 |                     size_t c_idx = (bi * BLOCK_SIZE + ti) * size + (bj * BLOCK_SIZE + tj);
+      |                                                                                       ^
+1 error generated.

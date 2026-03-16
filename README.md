@@ -570,6 +570,7 @@ std::vector<float> JacobiKokkos(
 |**REF**|**REF**|**0.9144**|**-**|
 |3822B1FI1|chistov_alexey|0.9184|2|
 |3822B1FI3|kolodkin_grigorii|2.1427|1|
+|3822B1FI1|shulpin_ilya|BUILD FAILED|-|
 
 ## 7_mkl_gemm_oneapi (3072 elements)
 |Group|Name|Result|Rank|
