@@ -641,6 +641,7 @@ std::vector<float> JacobiKokkos(
 ## 9_jacobi_kokkos (4096 elements)
 |Group|Name|Result|Rank|
 |-----|----|------|----|
+|3822B1FI1|shulpin_ilya|0.2572|6|
 |**REF**|**REF**|**0.2679**|**-**|
 |3822B1FI3|lopatin_ilya|0.3165|3|
 |3822B1FI1|shurigin_sergey|0.3170|5|
@@ -652,23 +653,22 @@ std::vector<float> JacobiKokkos(
 |3822B1FI2|yasakova_tanya|0.3641|1|
 |3822B1FI3|kolodkin_grigorii|0.3787|1|
 |3822B1FI1|solovev_alexey|0.3892|3|
-|3822B1FI1|shulpin_ilya|RUN FAILED|-|
 |3822B1FI1|ionova_ekaterina|BUILD FAILED|-|
 
 # Tasks Done
 ## 3822B1FI1
 |Group|Name|Passed|Score|
 |-----|----|------|-----|
-|3822B1FI1|beskhmelnova_kseniya|**9/9**|**540**|
-|3822B1FI1|chistov_alexey|**9/9**|**545**|
+|3822B1FI1|beskhmelnova_kseniya|**9/9**|**539**|
+|3822B1FI1|chistov_alexey|**9/9**|**544**|
 |3822B1FI1|drozhdinov_dmitriy|8/9|446|
 |3822B1FI1|ionova_ekaterina|2/9|106|
 |3822B1FI1|kabalova_valeria|2/9|116|
 |3822B1FI1|mironov_arseniy|1/9|57|
-|3822B1FI1|rezantseva_anastasia|**9/9**|**524**|
-|3822B1FI1|shulpin_ilya|6/9|327|
-|3822B1FI1|shurigin_sergey|**9/9**|**510**|
-|3822B1FI1|solovev_alexey|**9/9**|**523**|
+|3822B1FI1|rezantseva_anastasia|**9/9**|**523**|
+|3822B1FI1|shulpin_ilya|7/9|386|
+|3822B1FI1|shurigin_sergey|**9/9**|**509**|
+|3822B1FI1|solovev_alexey|**9/9**|**522**|
 
 Passed: 5
 
