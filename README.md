@@ -605,6 +605,7 @@ std::vector<float> JacobiKokkos(
 |**REF**|**REF**|**0.2633**|**-**|
 |3822B1FI2|guseynov_emil|0.2649|4|
 |3822B1FI1|shurigin_sergey|0.2827|5|
+|3822B1FI3|kudryashova_irina|0.2831|8|
 |3822B1FI3|lysov_ivan|0.2910|4|
 |3822B1FI3|kholin_kirill|0.3080|5|
 |3822B1FI1|drozhdinov_dmitriy|0.3305|4|
@@ -743,13 +744,13 @@ Passed: 3
 |Group|Name|Passed|Score|
 |-----|----|------|-----|
 |3822B1FI3|chizhov_maxim|**9/9**|**489**|
-|3822B1FI3|ekaterina_kozlova|**9/9**|**513**|
-|3822B1FI3|frolova_elizaveta|**9/9**|**530**|
-|3822B1FI3|kholin_kirill|**9/9**|**511**|
-|3822B1FI3|kolodkin_grigorii|**9/9**|**536**|
-|3822B1FI3|kudryashova_irina|4/9|225|
-|3822B1FI3|lopatin_ilya|**9/9**|**539**|
-|3822B1FI3|lysov_ivan|7/9|391|
+|3822B1FI3|ekaterina_kozlova|**9/9**|**512**|
+|3822B1FI3|frolova_elizaveta|**9/9**|**529**|
+|3822B1FI3|kholin_kirill|**9/9**|**510**|
+|3822B1FI3|kolodkin_grigorii|**9/9**|**535**|
+|3822B1FI3|kudryashova_irina|5/9|281|
+|3822B1FI3|lopatin_ilya|**9/9**|**538**|
+|3822B1FI3|lysov_ivan|7/9|390|
 |3822B1FI3|sozonov_ilya|2/9|112|
 
 Passed: 6
