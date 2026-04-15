@@ -479,6 +479,7 @@ std::vector<float> JacobiKokkos(
 ## 1_permutations_cxx (102400 elements)
 |Group|Name|Result|Rank|
 |-----|----|------|----|
+|3822B1FI1|suvorov_dmitrii|0.0310|13|
 |3822B1FI1|kurakin_matvey|0.0422|12|
 |3822B1FI3|kudryashova_irina|0.0615|9|
 |3822B1FI1|chistov_alexey|0.0672|1|
@@ -738,19 +739,20 @@ std::vector<float> JacobiKokkos(
 ## 3822B1FI1
 |Group|Name|Passed|Score|
 |-----|----|------|-----|
-|3822B1FI1|beskhmelnova_kseniya|**9/9**|**526**|
-|3822B1FI1|chistov_alexey|**9/9**|**533**|
-|3822B1FI1|drozhdinov_dmitriy|**9/9**|**485**|
-|3822B1FI1|grudzin_konstantin|3/9|151|
-|3822B1FI1|ionova_ekaterina|**9/9**|**472**|
+|3822B1FI1|beskhmelnova_kseniya|**9/9**|**525**|
+|3822B1FI1|chistov_alexey|**9/9**|**532**|
+|3822B1FI1|drozhdinov_dmitriy|**9/9**|**484**|
+|3822B1FI1|grudzin_konstantin|3/9|150|
+|3822B1FI1|ionova_ekaterina|**9/9**|**471**|
 |3822B1FI1|ivanov_mikhail|0/9|0|
-|3822B1FI1|kabalova_valeria|2/9|114|
-|3822B1FI1|kurakin_matvey|**9/9**|**454**|
-|3822B1FI1|mironov_arseniy|4/9|199|
-|3822B1FI1|rezantseva_anastasia|**9/9**|**515**|
-|3822B1FI1|shulpin_ilya|**9/9**|**487**|
-|3822B1FI1|shurigin_sergey|**9/9**|**494**|
-|3822B1FI1|solovev_alexey|**9/9**|**508**|
+|3822B1FI1|kabalova_valeria|2/9|113|
+|3822B1FI1|kurakin_matvey|**9/9**|**453**|
+|3822B1FI1|mironov_arseniy|4/9|198|
+|3822B1FI1|rezantseva_anastasia|**9/9**|**514**|
+|3822B1FI1|shulpin_ilya|**9/9**|**486**|
+|3822B1FI1|shurigin_sergey|**9/9**|**493**|
+|3822B1FI1|solovev_alexey|**9/9**|**507**|
+|3822B1FI1|suvorov_dmitrii|1/9|52|
 
 Passed: 9
 
