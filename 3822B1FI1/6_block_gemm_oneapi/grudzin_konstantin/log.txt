@@ -1,4 +1,0 @@
-/home/crazyproger/sandbox/oneapi-2026/3822B1FI1/6_block_gemm_oneapi/grudzin_konstantin/block_gemm_oneapi.cpp:1:10: fatal error: 'block_gemm_oneapi.handler' file not found
-    1 | #include "block_gemm_oneapi.handler"
-      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-1 error generated.
